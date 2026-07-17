@@ -1,13 +1,24 @@
+using ASPNetCoreApp.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient<EmbeddingService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Ollama:BaseUrl"]!);
+});
+
+builder.Services.AddHttpClient<VectorStoreService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Qdrant:BaseUrl"]!);
+});
+
+builder.Services.AddHttpClient<AnswerService>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -16,29 +27,52 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/documents", async (DocumentRequest request, EmbeddingService embeddingService, VectorStoreService vectorStore) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    if (string.IsNullOrWhiteSpace(request.Text))
+        return Results.BadRequest("text must not be empty.");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    try
+    {
+        var vector = await embeddingService.GetEmbeddingAsync(request.Text);
+        var id = await vectorStore.UpsertAsync(vector, request.Text);
+        return Results.Ok(new { id });
+    }
+    catch (DependencyUnavailableException ex)
+    {
+        return Results.Problem(detail: ex.Message, statusCode: StatusCodes.Status502BadGateway);
+    }
 })
-.WithName("GetWeatherForecast")
+.WithName("IndexDocument")
+.WithOpenApi();
+
+app.MapPost("/ask", async (AskRequest request, EmbeddingService embeddingService, VectorStoreService vectorStore, AnswerService answerService) =>
+{
+    if (string.IsNullOrWhiteSpace(request.Question))
+        return Results.BadRequest("question must not be empty.");
+
+    try
+    {
+        var queryVector = await embeddingService.GetEmbeddingAsync(request.Question);
+        var context = await vectorStore.SearchTopMatchAsync(queryVector);
+
+        if (string.IsNullOrEmpty(context))
+            return Results.NotFound("No matching context found for the question.");
+
+        var answer = await answerService.GenerateAnswerAsync(context, request.Question);
+        return Results.Ok(new { answer });
+    }
+    catch (DependencyUnavailableException ex)
+    {
+        return Results.Problem(detail: ex.Message, statusCode: StatusCodes.Status502BadGateway);
+    }
+})
+.WithName("AskQuestion")
 .WithOpenApi();
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record DocumentRequest(string Text);
+record AskRequest(string Question);
+
+public partial class Program { }
