@@ -2,7 +2,7 @@
 
 ## Source
 
-Adapted from console prototype at `C:\projects\Job Hunt\Skill-Up\rag-project` (`Program.cs`, `NOTES.md`). That app hardcodes one document and one question in a top-level-statements flow; this plan turns the same pipeline into a proper ASP.NET Core minimal API.
+Adapted from console prototype `rag-project` (`Program.cs`, `NOTES.md`). That app hardcodes one document and one question in a top-level-statements flow; this plan turns the same pipeline into a proper ASP.NET Core minimal API.
 
 ## Architecture (unchanged from prototype)
 

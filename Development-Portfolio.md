@@ -4,13 +4,14 @@ The single shared handoff/status file across all four tabs. Overwrite — never 
 
 ## Current state
 
-**Stage:** Review signed off clean — handed off to Documentation
-**Owner:** Documentation
+**Stage:** TICKET-1 closed — no open handoff
+**Owner:** none
 
 ## Handoff log
 
 _(newest first — one entry per handoff between tabs)_
 
+- **2026-07-17 — Documentation.** Closed out `Documentation/Tickets/TICKET-1-rag-minimal-api.md` (marked Status: Closed, all acceptance criteria met, noted the `Guid` id shape from Handoff-1's fix). Closed ticket needs no further handoff.
 - **2026-07-17 — Engineering → Documentation.** Review signed off clean on `feature/rag-minimal-api` at `77b142a` (TICKET-1). Not yet pushed further or merged — push to `main` still requires explicit user authorization per `git-workflow.md`, not requested this round. Handing off to Documentation per user direction.
 
 - **2026-07-17 — Review → Engineering.** Re-reviewed `feature/rag-minimal-api` at `77b142a`. Handoff-1 fix confirmed correct: `VectorStoreService.UpsertAsync` now returns `Guid.NewGuid()`, propagated through `/documents`' response; unused `QdrantPoint.Id` field dropped cleanly (never read post-search). Build clean, 17/17 tests pass. No new issues found. Signed off — clean. Engineering may request push authorization from the user per `git-workflow.md`.
@@ -25,7 +26,7 @@ _(newest first — one entry per handoff between tabs)_
   - Pushed `feature/rag-minimal-api` to `origin` (user-authorized, branch only — `master` not touched). Not merged; PR not opened.
 
 - **2026-07-17 — Documentation → Engineering.** Wrote `Documentation/Tickets/TICKET-1-rag-minimal-api.md` from `Planning/Plan-rag-minimal-api.md`. Ticket covers both endpoints, all five error-handling cases, service structure, and required test coverage (unit + smoke). Engineering should implement per the ticket and plan.
-- **2026-07-17 — Planning → Documentation.** Approved `Planning/Plan-rag-minimal-api.md`: minimal API (`POST /documents`, `POST /ask`) wrapping the RAG pipeline from the console prototype at `C:\projects\Job Hunt\Skill-Up\rag-project` (Ollama embeddings → Qdrant vector search → Claude generation). Scope: error handling for unreachable/failing Ollama/Qdrant/Claude and empty search results; explicitly excludes chunking, doc list/delete, and multi-doc discrimination. Documentation should write the ticket from this plan.
+- **2026-07-17 — Planning → Documentation.** Approved `Planning/Plan-rag-minimal-api.md`: minimal API (`POST /documents`, `POST /ask`) wrapping the RAG pipeline from the console prototype `rag-project` (Ollama embeddings → Qdrant vector search → Claude generation). Scope: error handling for unreachable/failing Ollama/Qdrant/Claude and empty search results; explicitly excludes chunking, doc list/delete, and multi-doc discrimination. Documentation should write the ticket from this plan.
 
 ## Open items
 

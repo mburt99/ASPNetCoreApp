@@ -1,10 +1,24 @@
-# TICKET-1 — RAG Minimal API
+# TICKET-1 — Implement RAG Demonstration
+
+**Status:** Closed — Review signed off clean on `feature/rag-minimal-api` at `77b142a`. All acceptance criteria below met; note in ticket-level scope, `id` field is a `Guid` per the fix in Handoff-1 (not a raw int).
 
 ## Summary
 
-Build a minimal API wrapping the RAG pipeline from the console prototype at `C:\projects\Job Hunt\Skill-Up\rag-project`: Ollama embeddings → Qdrant vector search → Claude generation. Two endpoints — `POST /documents` (index a document) and `POST /ask` (answer a question from indexed context) — with error handling for unreachable/failing dependencies and empty search results.
+Build a minimal API wrapping the RAG pipeline from the console prototype `rag-project`: Ollama embeddings → Qdrant vector search → Claude generation.
+
+## Description
+
+Two endpoints — `POST /documents` (index a document) and `POST /ask` (answer a question from indexed context) — replacing the prototype's hardcoded one-document/one-question console flow with a proper ASP.NET Core minimal API. `POST /documents` embeds submitted text via Ollama (`nomic-embed-text`) and upserts it into Qdrant. `POST /ask` embeds a question, retrieves the top Qdrant match, and calls Claude (`claude-sonnet-5`) to generate an answer grounded in that context. Includes error handling for unreachable/failing Ollama, Qdrant, or Claude, and for the case where no documents are indexed yet.
 
 Plan: `../../Planning/Plan-rag-minimal-api.md`
+
+## Story
+
+As a developer evaluating this codebase, I want to index text documents and ask questions against them over HTTP, so that I can demonstrate a working RAG pipeline without relying on the console prototype's hardcoded input.
+
+## Risk Statement
+
+Ollama and Qdrant are local dependencies not guaranteed to be running; if either is down, indexing or querying fails, so failures must be surfaced as clear `502` responses rather than unhandled exceptions. Anthropic API failures carry the same risk. Because Qdrant persists across process restarts, an id-assignment scheme must not collide with or silently overwrite previously indexed documents.
 
 ## Acceptance Criteria
 
