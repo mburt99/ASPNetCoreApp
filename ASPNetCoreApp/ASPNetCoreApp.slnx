@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ASPNetCoreApp.Tests/ASPNetCoreApp.Tests.csproj" />
+  <Project Path="ASPNetCoreApp.csproj" />
+</Solution>

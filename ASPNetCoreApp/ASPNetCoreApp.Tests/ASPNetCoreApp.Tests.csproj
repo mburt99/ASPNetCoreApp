@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ASPNetCoreApp\ASPNetCoreApp.csproj" />
+    <ProjectReference Include="..\ASPNetCoreApp.csproj" />
   </ItemGroup>
 
 </Project>

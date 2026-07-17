@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ASPNetCoreApp.Tests\**" />
+    <Content Remove="ASPNetCoreApp.Tests\**" />
+    <EmbeddedResource Remove="ASPNetCoreApp.Tests\**" />
+    <None Remove="ASPNetCoreApp.Tests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Anthropic" Version="12.35.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.28" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.10" />
