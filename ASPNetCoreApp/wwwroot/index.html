@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Document Search</title>
+</head>
+<body>
+  <h1>Document Search</h1>
+  <form id="searchForm">
+    <input id="query" type="text" placeholder="Ask a question..." style="width:300px" />
+    <button type="submit">Search</button>
+  </form>
+  <div id="result" style="margin-top:1em"></div>
+
+  <script>
+    document.getElementById('searchForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const query = document.getElementById('query').value;
+      const resultDiv = document.getElementById('result');
+      resultDiv.textContent = 'Searching...';
+
+      const res = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query })
+      });
+
+      if (res.status === 404) {
+        resultDiv.textContent = 'No relevant result found.';
+        return;
+      }
+      if (!res.ok) {
+        resultDiv.textContent = 'Search failed.';
+        return;
+      }
+
+      const data = await res.json();
+      resultDiv.innerHTML = `<h3>${data.title}</h3><p><em>Source: ${data.source}</em></p><p>${data.content}</p>`;
+    });
+  </script>
+</body>
+</html>

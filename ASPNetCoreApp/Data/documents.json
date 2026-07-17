@@ -1,0 +1,9 @@
+[
+  { "Id": "1", "Title": "Resetting Your Password", "Source": "Account FAQ", "Content": "To reset your password, go to Settings > Security and click Forgot Password. You will receive a reset link by email valid for 24 hours." },
+  { "Id": "2", "Title": "Refund Policy", "Source": "Billing FAQ", "Content": "Refunds are available within 30 days of purchase. Contact support with your order number to request a refund." },
+  { "Id": "3", "Title": "Upgrading Your Plan", "Source": "Billing FAQ", "Content": "You can upgrade your subscription plan anytime from the Billing page. Changes take effect immediately and are prorated." },
+  { "Id": "4", "Title": "Canceling Your Subscription", "Source": "Billing FAQ", "Content": "To cancel, go to Billing > Manage Subscription and click Cancel. You retain access until the end of the billing period." },
+  { "Id": "5", "Title": "Two-Factor Authentication Setup", "Source": "Security FAQ", "Content": "Enable two-factor authentication in Settings > Security. Scan the QR code with an authenticator app to complete setup." },
+  { "Id": "6", "Title": "Exporting Your Data", "Source": "Data FAQ", "Content": "Export all your account data as a CSV or JSON file from Settings > Data Export. Large exports are emailed as a download link." },
+  { "Id": "7", "Title": "Contacting Support", "Source": "Support FAQ", "Content": "Reach our support team via the in-app chat or email support@example.com. Response time is typically within one business day." }
+]
