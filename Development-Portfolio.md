@@ -4,12 +4,16 @@ The single shared handoff/status file across all four tabs. Overwrite — never 
 
 ## Current state
 
-**Stage:** Fix implemented — handed back to Review
-**Owner:** Review
+**Stage:** Review signed off clean — handed off to Documentation
+**Owner:** Documentation
 
 ## Handoff log
 
 _(newest first — one entry per handoff between tabs)_
+
+- **2026-07-17 — Engineering → Documentation.** Review signed off clean on `feature/rag-minimal-api` at `77b142a` (TICKET-1). Not yet pushed further or merged — push to `main` still requires explicit user authorization per `git-workflow.md`, not requested this round. Handing off to Documentation per user direction.
+
+- **2026-07-17 — Review → Engineering.** Re-reviewed `feature/rag-minimal-api` at `77b142a`. Handoff-1 fix confirmed correct: `VectorStoreService.UpsertAsync` now returns `Guid.NewGuid()`, propagated through `/documents`' response; unused `QdrantPoint.Id` field dropped cleanly (never read post-search). Build clean, 17/17 tests pass. No new issues found. Signed off — clean. Engineering may request push authorization from the user per `git-workflow.md`.
 
 - **2026-07-17 — Engineering → Review.** Fixed `Review/Handoffs/Handoff-1.md` issue #1: `VectorStoreService.UpsertAsync` now assigns a `Guid.NewGuid()` per document instead of an in-memory `static int` counter that restarted at 1 and silently overwrote existing Qdrant points across process restarts. `UpsertAsync` return type changed `int` → `Guid` (propagates through `/documents`' JSON response). Also removed the now-unused `Id` field from `VectorStoreService.QdrantPoint` — kept it typed to match new writes would have crashed deserializing the pre-existing int-id point from the earlier smoke test (caught live, not just in tests: `/ask` 500'd on the old Eiffel Tower point until `Id` was dropped from the record since it was never read after search anyway). Updated the 2 affected tests (`VectorStoreServiceTests`, `EndpointTests`) for the new `Guid` id shape. 17/17 tests still pass. Re-ran smoke test live: indexed a new document (real GUID assigned, e.g. `2dff62df-...`), then confirmed both the old int-id point and the new GUID-id point are independently retrievable via `/ask` with correct grounded answers. Pushed to `origin/feature/rag-minimal-api`.
 
@@ -25,5 +29,5 @@ _(newest first — one entry per handoff between tabs)_
 
 ## Open items
 
-- Review to re-check Handoff-1's fix (`feature/rag-minimal-api`, latest commit).
-- 404 and 502 paths are verified only via automated tests, not a live run — flag if Review wants a live repro.
+- Engineering to ask the user for explicit push authorization to `main` (per `git-workflow.md`) now that Review is clean.
+- 404 and 502 paths are verified only via automated tests, not a live run — non-blocking, noted for awareness only.
