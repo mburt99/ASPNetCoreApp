@@ -64,7 +64,7 @@ public class EndpointTests
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         var body = await response.Content.ReadFromJsonAsync<JsonElement>();
-        Assert.True(body.GetProperty("id").GetInt32() > 0);
+        Assert.NotEqual(Guid.Empty, body.GetProperty("id").GetGuid());
     }
 
     [Fact]
@@ -95,7 +95,7 @@ public class EndpointTests
         """;
         using var factory = CreateFactory(
             ollamaResponder: _ => JsonOk("""{"embeddings":[[0.1,0.2]]}"""),
-            qdrantResponder: _ => JsonOk("""{"result":[{"id":1,"score":0.9,"payload":{"text":"matched context"}}]}"""),
+            qdrantResponder: _ => JsonOk("""{"result":[{"id":"3fa85f64-5717-4562-b3fc-2c963f66afa6","score":0.9,"payload":{"text":"matched context"}}]}"""),
             claudeResponder: _ => JsonOk(claudeJson));
         using var client = factory.CreateClient();
 

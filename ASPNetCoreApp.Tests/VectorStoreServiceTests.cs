@@ -18,7 +18,7 @@ public class VectorStoreServiceTests
 
         var id = await service.UpsertAsync([0.1f, 0.2f], "some text");
 
-        Assert.True(id > 0);
+        Assert.NotEqual(Guid.Empty, id);
         Assert.Equal("/collections/docs/points", handler.LastRequest!.RequestUri!.AbsolutePath);
         Assert.Equal(HttpMethod.Put, handler.LastRequest.Method);
         Assert.Contains("\"text\":\"some text\"", handler.LastRequestBody);
@@ -50,7 +50,7 @@ public class VectorStoreServiceTests
     {
         var handler = new FakeHttpMessageHandler(_ => new HttpResponseMessage(HttpStatusCode.OK)
         {
-            Content = new StringContent("""{"result":[{"id":1,"score":0.9,"payload":{"text":"matched context"}}]}""")
+            Content = new StringContent("""{"result":[{"id":"3fa85f64-5717-4562-b3fc-2c963f66afa6","score":0.9,"payload":{"text":"matched context"}}]}""")
         });
         var http = new HttpClient(handler) { BaseAddress = new Uri("http://qdrant.test") };
         var service = new VectorStoreService(http);

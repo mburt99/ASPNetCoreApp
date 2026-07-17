@@ -4,11 +4,9 @@ namespace ASPNetCoreApp.Services;
 
 public class VectorStoreService(HttpClient http)
 {
-    private static int _nextId;
-
-    public async Task<int> UpsertAsync(float[] vector, string text)
+    public async Task<Guid> UpsertAsync(float[] vector, string text)
     {
-        var id = Interlocked.Increment(ref _nextId);
+        var id = Guid.NewGuid();
         var body = new { points = new[] { new { id, vector, payload = new { text } } } };
 
         HttpResponseMessage response;
@@ -49,5 +47,5 @@ public class VectorStoreService(HttpClient http)
     }
 
     record QdrantSearchResponse(List<QdrantPoint> Result);
-    record QdrantPoint(int Id, float Score, Dictionary<string, string> Payload);
+    record QdrantPoint(float Score, Dictionary<string, string> Payload);
 }
