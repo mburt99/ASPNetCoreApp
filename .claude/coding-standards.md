@@ -15,10 +15,11 @@ Starter conventions — extend as the actual interview task's specifics emerge (
 
 - xUnit for unit tests.
 - Test naming: `MethodName_Scenario_ExpectedBehavior`.
-- Unit tests live in a sibling `*.Tests` project, referencing the main project.
+- Unit tests live in a `*.Tests` project nested under the main project folder (e.g. `ASPNetCoreApp/ASPNetCoreApp.Tests/`), referencing the main project.
 - Smoke test the running app after implementation (see `workflow.md` — Engineering's responsibility before handoff to Review).
 
 ## Structure
 
-- One `.sln` at `Engineering/` root once the project is scaffolded.
+- One `.sln`/`.slnx` inside the main project folder (e.g. `ASPNetCoreApp/ASPNetCoreApp.slnx`), sibling to the app's own `.csproj` and the `*.Tests` folder — not at the repo root or under `Engineering/`.
+- Main project's `.csproj` must exclude the `*.Tests` subfolder (`Compile`/`Content`/`EmbeddedResource`/`None` `Remove`) since the SDK-style default glob would otherwise pull test files into the main project's compile items.
 - Standard ASP.NET Core folder layout (`Controllers/` or `Endpoints/`, `Models/`, `Services/`) — exact shape depends on the task; don't over-scaffold before requirements are known.
