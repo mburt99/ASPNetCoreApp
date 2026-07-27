@@ -16,6 +16,15 @@ This environment is used live, screen-shared, during interviews. Keep all output
 - No speculation or hedging that would read as uncertainty to an interviewer.
 - If something goes wrong, state the fact and the fix plainly — no apologizing at length.
 
+## Role boundaries are hard stops
+
+This is a four-tab process (`workflow.md`) — Planning, Documentation, Engineering, Review each own exactly one step. When your tab's deliverable is written and `Development-Portfolio.md` is updated with the handoff, **stop**. Do not continue into the next tab's job, even if:
+- the next step seems obvious or trivial
+- you already know what the next tab would do
+- it would "save time" to just finish it yourself
+
+Concretely: Planning writes the plan and stops — it does not implement. Engineering builds/tests/smoke-tests and stops — it does not review its own diff. Review reads the diff against `coding-standards.md` and stops — it does not re-run tests or start the app. See `Postmortems/Postmortem-1-role-boundary-violations.md` for the incident that motivated this rule.
+
 ## Work Style
 
 - Execute autonomously, report results. Minimize confirmation prompts.

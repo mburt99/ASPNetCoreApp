@@ -14,8 +14,9 @@ GitHub: `ASPNetCoreApp` (covers the whole `C:\Working` tree — Planning/Documen
 ## Branching
 
 - Feature branches off main: `feature/short-name`.
-- **Never push to main without explicit direction from user** — each push authorization is scoped to that specific action, prior permission doesn't carry forward.
-- Engineering asks for explicit permission to push only after Review has signed off clean (see `workflow.md`).
+- **Pushing the current branch to origin is pre-authorized** once a build, unit tests, and smoke tests all succeed — commit and push without asking (see `workflow.md` step 3).
+- **Never push to `main`/`master` without explicit direction from user** — each push authorization is scoped to that specific action, prior permission doesn't carry forward, and no amount of prior branch pushes implies it.
+- Engineering asks for explicit permission to push to `main`/`master` only after Review has signed off clean (see `workflow.md`).
 
 ## Pull Requests
 
